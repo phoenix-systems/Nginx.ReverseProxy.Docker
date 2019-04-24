@@ -8,7 +8,30 @@ The following environment params are supported
 ```
 
 ## Pre-built docker image
-You can quickly run a container with a pre-built [docker image](https://hub.docker.com/r/phoenixsystemsag/nginx-reverse-proxy).
+You can quickly run a container with a pre-built [docker image](https://hub.docker.com/r/phoenixsystemsag/nginx-reverse-proxy). Sample docker-compose.yaml with traefik:
+```
+version: '3'
+services:
+  reverse-proxy:
+    image: phoenixsystemsag/nginx-reverse-proxy:1.0.0
+    restart: unless-stopped
+    expose:
+      - 80
+    networks:
+      - web
+      - default
+    environment:
+      - "TARGET_URL=http://example.local/"
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.frontend.redirect.entryPoint=https"
+      - "traefik.frontend.rule=Host:example.com"
+networks:
+  web:
+    external: true
+```
 
 ## Build docker image
 Pull code from repository and run the following command:
