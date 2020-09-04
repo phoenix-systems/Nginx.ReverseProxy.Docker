@@ -1,5 +1,7 @@
 server {
     listen 80;
+    client_header_buffer_size    8k;
+    large_client_header_buffers  4 16k;    
    
     location / {    
           proxy_set_header        Host               ${TARGET_HOST};
